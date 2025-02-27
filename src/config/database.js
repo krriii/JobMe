@@ -16,11 +16,18 @@ const sequelize = new Sequelize(
     }
   );
   
-//database connection
-sequelize
-  .authenticate()
-  .then(() => console.log("The database connected"))
-  .catch((err) => console.error("Database connection error ", err));
+// Database connection
+const connectDB = async () => {
+  try {
+      await sequelize.authenticate();
+      console.log("✅ Database connected successfully!");
+  } catch (error) {
+      console.error("❌ Database connection error:", error);
+  }
+};
+
+// Call the function to connect
+connectDB();
 
 export default sequelize;
 
