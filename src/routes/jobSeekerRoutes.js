@@ -4,7 +4,8 @@ import {
     getJobSeekers,
     getJobSeekerById,
     updateJobSeeker,
-    deleteJobSeeker
+    deleteJobSeeker,
+    
 } from "../controllers/jobSeekerController.js";
 
 const router = express.Router();
@@ -14,6 +15,7 @@ router.get("/", getJobSeekers);
 router.get("/:id", getJobSeekerById);
 router.put("/:id", updateJobSeeker);
 router.delete("/:id", deleteJobSeeker);
+
 
 export default router;
 
