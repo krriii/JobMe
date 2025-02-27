@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { syncDatabase } from "./src/models/index.js";
 import { fileURLToPath } from 'url';
 import authRoutes from "./src/routes/authRoutes.js";
+import employerRoutes from "./src/routes/employerRoutes.js";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ server.set('views', path.join(__dirname, 'views'));
 })();
 
 server.use("/api/auth", authRoutes);
+server.use("/api/employers", employerRoutes);
 
 
 server.get("/", (req, res) => {
