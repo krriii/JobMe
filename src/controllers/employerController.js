@@ -5,6 +5,7 @@ import User from "../models/user.js";
 export const createEmployer = async (req, res) => {
     try {
         const { user_id, company_name, industry, location, website } = req.body;
+    
 
         // Check if user exists and is an Employer
         const user = await User.findByPk(user_id);

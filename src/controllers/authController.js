@@ -5,8 +5,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-
-
 // **User Registration**
 export const registerUser = async (req, res) => {
     try {
@@ -71,7 +69,9 @@ export const loginUser = async (req, res) => {
             { expiresIn: "1h" }
           );
 
-        res.status(200).json({ message: "Login successful", token });
+
+         res.status(200).json({ message: "Login successful", token });
+        
     } catch (error) {
         console.error("Error in loginUser:", error);
         res.status(500).json({ message: "Internal Server Error" });

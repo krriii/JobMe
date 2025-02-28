@@ -15,17 +15,21 @@ dotenv.config();
 const server = express();
 
 
+
 // Get the directory name of the current module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Set up view engine
+server.set('view engine', 'ejs');
+server.set('views', path.join(__dirname,'src', 'views'));
 
 // Middleware
 server.use(express.json()); // To handle JSON requests
 server.use(express.urlencoded({ extended: true })); // To handle form data
 server.use(express.static(path.join(__dirname, "public"))); // Static files
 
-// Set up view engine
-server.set('view engine', 'ejs');
-server.set('views', path.join(__dirname, 'views'));
+
+
 
 // Sync Database
 (async () => {
