@@ -7,6 +7,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import employerRoutes from "./src/routes/employerRoutes.js";
 import jobSeekerRoutes from "./src/routes/jobSeekerRoutes.js";
 import jobRoutes from "./src/routes/jobRoutes.js";
+import applicationRoutes from "./src/routes/applicationRoutes.js";
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ server.use("/api/auth", authRoutes);
 server.use("/api/employers", employerRoutes);
 server.use("/api/jobSeekers", jobSeekerRoutes);
 server.use("/api/jobs", jobRoutes);
+server.use("/api/applications", applicationRoutes);
 
 
 

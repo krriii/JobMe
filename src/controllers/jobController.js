@@ -131,6 +131,44 @@ export const deleteJob = async (req, res) => {
 };
 
 //Get all jobs (with optional search by title)
+// export const getJobsByName = async (req, res) => {
+//     try {
+//         const { title } = req.query; // Get title from query params
+
+//         // Debugging logs
+//         console.log("Received search title:", title);
+
+//         // Default: Get all jobs
+//         let whereClause = {};
+//         if (title) {
+//             whereClause.title = { [Op.like]: `%${title}%` }; // Case-insensitive search (for MySQL)
+//         }
+
+//         console.log("Where clause:", whereClause); // Log the filter condition
+
+//         // Fetch jobs based on filter
+//         const jobs = await Job.findAll({ where: {
+//             title: sequelize.where(
+//                 sequelize.fn("LOWER", sequelize.col("title")),
+//                 "LIKE",
+//                 `%${title.toLowerCase()}%`
+//             ),
+//         },
+//     });
+
+//         console.log("Found jobs:", jobs.length); // Log the number of results
+
+//         if (jobs.length === 0) {
+//             return res.status(404).json({ message: "No jobs found" });
+//         }
+
+//         res.status(200).json(jobs);
+//     } catch (error) {
+//         console.error("Error fetching jobs:", error);
+//         res.status(500).json({ message: "Internal Server Error" });
+//     }
+// };
+
 export const getJobsByName = async (req, res) => {
     try {
         const { title } = req.query; // Get title from query params
@@ -141,20 +179,17 @@ export const getJobsByName = async (req, res) => {
         // Default: Get all jobs
         let whereClause = {};
         if (title) {
-            whereClause.title = { [Op.like]: `%${title}%` }; // Case-insensitive search (for MySQL)
+            whereClause.title = sequelize.where(
+                sequelize.fn("LOWER", sequelize.col("title")),
+                "LIKE",
+                `%${title.toLowerCase()}%`
+            );
         }
 
         console.log("Where clause:", whereClause); // Log the filter condition
 
         // Fetch jobs based on filter
-        const jobs = await Job.findAll({ where: {
-            title: sequelize.where(
-                sequelize.fn("LOWER", sequelize.col("title")),
-                "LIKE",
-                `%${title.toLowerCase()}%`
-            ),
-        },
-    });
+        const jobs = await Job.findAll({ where: whereClause });
 
         console.log("Found jobs:", jobs.length); // Log the number of results
 
