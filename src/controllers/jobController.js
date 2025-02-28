@@ -1,5 +1,6 @@
 import Job from "../models/job.js";
 import Employer from "../models/employer.js";
+import sequelize from "../config/database.js";
 import { Op } from "sequelize";
 
 // **1. Create a Job Posting**
@@ -25,13 +26,39 @@ export const createJob = async (req, res) => {
 };
 
 // **2. Get All Jobs**
+// export const getAllJobs = async (req, res) => {
+//     try {
+//         const jobs = await Job.findAll({
+//             include: [{ model: Employer, attributes: ["company_name", "location"] }],
+//         });
+
+//         res.status(200).json(jobs);
+//     } catch (error) {
+//         console.error("Error in getAllJobs:", error);
+//         res.status(500).json({ message: "Internal Server Error" });
+//     }
+// };
+
+// Get all jobs (with pagination)
 export const getAllJobs = async (req, res) => {
     try {
-        const jobs = await Job.findAll({
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = (page - 1) * limit;
+
+        const jobs = await Job.findAndCountAll({
             include: [{ model: Employer, attributes: ["company_name", "location"] }],
+            limit,
+            offset,
+            order: [['posted_at', 'DESC']] // Assuming you want the newest jobs first
         });
 
-        res.status(200).json(jobs);
+        res.status(200).json({
+            jobs: jobs.rows,
+            totalJobs: jobs.count,
+            totalPages: Math.ceil(jobs.count / limit),
+            currentPage: page
+        });
     } catch (error) {
         console.error("Error in getAllJobs:", error);
         res.status(500).json({ message: "Internal Server Error" });
@@ -103,20 +130,42 @@ export const deleteJob = async (req, res) => {
     }
 };
 
-// Get all jobs (with optional search by title)
+//Get all jobs (with optional search by title)
 export const getJobsByName = async (req, res) => {
     try {
-      const { title } = req.query; // Get title from query params
-  
-      let whereClause = {}; // Default: No filter
-      if (title) {
-        whereClause.title = { [Op.like]: `%${title}%` }; // Case-insensitive search
-      }
-  
-      const jobs = await Job.findAll({ where: whereClause });
-      res.status(200).json(jobs);
+        const { title } = req.query; // Get title from query params
+
+        // Debugging logs
+        console.log("Received search title:", title);
+
+        // Default: Get all jobs
+        let whereClause = {};
+        if (title) {
+            whereClause.title = { [Op.like]: `%${title}%` }; // Case-insensitive search (for MySQL)
+        }
+
+        console.log("Where clause:", whereClause); // Log the filter condition
+
+        // Fetch jobs based on filter
+        const jobs = await Job.findAll({ where: {
+            title: sequelize.where(
+                sequelize.fn("LOWER", sequelize.col("title")),
+                "LIKE",
+                `%${title.toLowerCase()}%`
+            ),
+        },
+    });
+
+        console.log("Found jobs:", jobs.length); // Log the number of results
+
+        if (jobs.length === 0) {
+            return res.status(404).json({ message: "No jobs found" });
+        }
+
+        res.status(200).json(jobs);
     } catch (error) {
-      console.error("Error fetching jobs:", error);
-      res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error fetching jobs:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-  };
+};
+
