@@ -19,6 +19,13 @@ export const authenticateEmployer = (req, res, next) => {
         next();
     });
 };
+// export const authenticateEmployer = (req, res, next) => {
+//     if (req.session && req.session.user_id && req.session.role === 'employer') {
+//         return next();
+//     } else {
+//         return res.status(401).json({ message: "Unauthorized" });
+//     }
+// };
 
 // **Job Seeker Authentication Middleware**
 export const authenticateJobSeeker = (req, res, next) => {

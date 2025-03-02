@@ -22,6 +22,30 @@ export const createEmployer = async (req, res) => {
     }
 };
 
+// Route to handle form submission
+export const submitForm = async (req, res) => {
+    const { companyName, industry, location, website } = req.body;
+
+    try {
+        // Assuming user_id is available in the session or request object
+        const user_id = req.user.id;
+
+        // Create a new employer record in the database
+        const newEmployer = await Employer.create({
+            employer_id: user_id,
+            company_name: companyName,
+            industry: industry,
+            location: location,
+            website: website,
+        });
+
+        res.status(201).json({ success: true, employer: newEmployer });
+    } catch (error) {
+        console.error('Error creating employer:', error);
+        res.status(500).json({ success: false, error: 'Failed to create employer' });
+    }
+};
+
 // Get all Employers
 export const getEmployers = async (req, res) => {
     try {

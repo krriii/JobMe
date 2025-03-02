@@ -28,6 +28,9 @@ const Job = sequelize.define(
     salary: {
       type: DataTypes.DECIMAL(10, 2),
     },
+    jobType: {
+      type: DataTypes.STRING,
+    },
     posted_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
