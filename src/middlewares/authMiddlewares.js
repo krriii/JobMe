@@ -13,24 +13,18 @@ export const authenticateUser = (req, res, next) => {
 // **Employer Authentication Middleware**
 export const authenticateEmployer = (req, res, next) => {
     authenticateUser(req, res, () => {
-        if (req.user.user_type !== "Employer") {
+        console.log("Session user data:", req.user); // Log the session user data
+        if (!req.session.user ||req.user.user_type !== "Employer") {
             return res.status(403).json({ message: "Access denied: Employers only" });
         }
         next();
     });
 };
-// export const authenticateEmployer = (req, res, next) => {
-//     if (req.session && req.session.user_id && req.session.role === 'employer') {
-//         return next();
-//     } else {
-//         return res.status(401).json({ message: "Unauthorized" });
-//     }
-// };
 
 // **Job Seeker Authentication Middleware**
 export const authenticateJobSeeker = (req, res, next) => {
     authenticateUser(req, res, () => {
-        if (req.user.user_type !== "Job Seeker") {
+        if (!req.session.user ||req.user.user_type !== "Job Seeker") {
             return res.status(403).json({ message: "Access denied: Job Seekers only" });
         }
         next();

@@ -5,14 +5,20 @@ import JobSeeker from "../models/jobSeeker.js";
 // Create a new application
 export const createApplication = async (req, res) => {
     try {
-        const { job_id, job_seeker_id } = req.body;
+        const { job_id, job_seeker_id, resume_file, skills, experience, portfolio_link } = req.body;
 
-        const newApplication = await Application.create({
+        const application = await Application.create({
             job_id,
             job_seeker_id,
+            resume_file,
+            skills,
+            experience,
+            portfolio_link,
+            status: "Pending",
+            applied_at: new Date(),
         });
 
-        res.status(201).json(newApplication);
+        res.status(201).json(application);
     } catch (error) {
         console.error("Error creating application:", error);
         res.status(500).json({ message: "Internal Server Error" });
@@ -91,6 +97,36 @@ export const deleteApplication = async (req, res) => {
         res.status(204).send();
     } catch (error) {
         console.error("Error deleting application:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+// Get applications by job seeker
+export const getApplicationsByJobSeeker = async (req, res) => {
+    try {
+        const { job_seeker_id } = req.params;
+        const applications = await Application.findAll({
+            where: { job_seeker_id },
+            include: [{ model: Job }]
+        });
+        res.status(200).json(applications);
+    } catch (error) {
+        console.error("Error fetching applications:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+// Get applications by job seeker ID
+export const getApplicationsByJobSeekerId = async (req, res) => {
+    try {
+        const { job_seeker_id } = req.params;
+        const applications = await Application.findAll({
+            where: { job_seeker_id },
+            include: [{ model: Job }]
+        });
+        res.status(200).json(applications);
+    } catch (error) {
+        console.error("Error fetching applications:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };

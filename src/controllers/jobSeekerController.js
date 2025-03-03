@@ -4,25 +4,10 @@ import User from "../models/user.js";
 // Create JobSeeker
 export const createJobSeeker = async (req, res) => {
     try {
-        const { user_id, resume_file, skills, experience, portfolio_link } = req.body;
-
-        // Check if user exists and is a JobSeeker
-        const user = await User.findByPk(user_id);
-        if (!user || user.user_type !== "Job Seeker") {
-            return res.status(400).json({ message: "Invalid user or not a JobSeeker" });
-        }
-
-        const jobSeeker = await JobSeeker.create({ 
-            job_seeker_id: user_id, 
-            resume_file, 
-            skills, 
-            experience, 
-            portfolio_link 
-        });
-
-        res.status(201).json({ message: "JobSeeker profile created successfully", jobSeeker });
+        const jobSeeker = await JobSeeker.create(req.body);
+        res.status(201).json(jobSeeker);
     } catch (error) {
-        console.error("Error in createJobSeeker:", error);
+        console.error("Error creating job seeker:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
@@ -33,7 +18,7 @@ export const getJobSeekers = async (req, res) => {
         const jobSeekers = await JobSeeker.findAll();
         res.status(200).json(jobSeekers);
     } catch (error) {
-        console.error("Error in getJobSeekers:", error);
+        console.error("Error fetching job seekers:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
@@ -48,7 +33,7 @@ export const getJobSeekerById = async (req, res) => {
         }
         res.status(200).json(jobSeeker);
     } catch (error) {
-        console.error("Error in getJobSeekerById:", error);
+        console.error("Error fetching job seeker:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
@@ -57,28 +42,16 @@ export const getJobSeekerById = async (req, res) => {
 export const updateJobSeeker = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, email, resume_file, skills, experience, portfolio_link } = req.body;
-
-        const jobSeeker = await JobSeeker.findByPk(id);
-        if (!jobSeeker) {
+        const [updated] = await JobSeeker.update(req.body, {
+            where: { job_seeker_id: id }
+        });
+        if (!updated) {
             return res.status(404).json({ message: "JobSeeker not found" });
         }
-
-        // Update User table (name, email)
-        await User.update(
-            { name, email }, 
-            { where: { user_id: id } }
-        );
-
-        // Update JobSeeker table
-        await JobSeeker.update(
-            { resume_file, skills, experience, portfolio_link }, 
-            { where: { job_seeker_id: id } }
-        );
-
-        res.status(200).json({ message: "JobSeeker updated successfully", jobSeeker });
+        const updatedJobSeeker = await JobSeeker.findByPk(id);
+        res.status(200).json(updatedJobSeeker);
     } catch (error) {
-        console.error("Error in updateJobSeeker:", error);
+        console.error("Error updating job seeker:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
@@ -99,5 +72,27 @@ export const deleteJobSeeker = async (req, res) => {
     } catch (error) {
         console.error("Error in deleteJobSeeker:", error);
         res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+// Render Dashboard
+export const renderDashboard = async (req, res) => {
+    try {
+        const jobSeekerId = req.session.user.job_seeker_id; // Use job_seeker_id from session
+        res.render('jobseeker/dashboard', { jobSeekerId });
+    } catch (error) {
+        console.error("Error rendering dashboard:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+// Render Applications
+export const renderApplications = async (req, res) => {
+    try {
+        const jobSeekerId = req.session.user.job_seeker_id; // Use job_seeker_id from session
+        res.render('jobseeker/application', { jobSeekerId });
+    } catch (error) {
+        console.error('Error rendering applications:', error);
+        res.status(500).send('Internal Server Error');
     }
 };

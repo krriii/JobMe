@@ -5,23 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Seeker Dashboard | JobMe</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .job-item:hover {
+            border: 2px solid #3b82f6; /* Tailwind blue-500 */
+            cursor: pointer;
+        }
+        .job-item:hover h3 {
+            text-decoration: underline;
+        }
+        .fixed-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+        }
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 16rem; /* Width of the sidebar */
+            right: 0;
+            z-index: 10;
+        }
+        .main-content {
+            margin-left: 16rem; /* Width of the sidebar */
+            margin-top: 4rem; /* Height of the header */
+            overflow-y: auto;
+            height: calc(100vh - 4rem); /* Full height minus the header height */
+        }
+    </style>
 </head>
 <body class="h-full bg-gray-100">
     <div class="flex">
         <!-- Sidebar -->
-        <nav class="bg-gray-800 w-64 min-h-screen">
+        <nav class="bg-gray-800 w-64 min-h-screen fixed-sidebar">
             <div class="flex items-center h-16 bg-gray-800">
                 <h1 class="text-white text-2xl font-semibold">JobMe</h1>
             </div>
             <div class="mt-5 flex-1 flex flex-col">
                 <ul class="space-y-2 px-2">
                     <li>
-                        <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                        <a href="/api/auth/dashboard/jobseeker" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
                             <span class="text-sm font-medium">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                        <a href="/applications" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                            <span class="text-sm font-medium">Applications</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/logout" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
                             <span class="text-sm font-medium">Logout</span>
                         </a>
                     </li>
@@ -30,9 +63,9 @@
         </nav>
 
         <!-- Main content -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col main-content">
             <!-- Header -->
-            <header class="bg-white shadow-sm">
+            <header class="bg-white shadow-sm fixed-header">
                 <div class="flex items-center justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     <h1 class="text-3xl font-bold tracking-tight text-gray-900">Welcome JobSeeker</h1>
                     <div class="relative">
@@ -40,10 +73,52 @@
                     </div>
                 </div>
             </header>
-            
-            </main>
+
+            <!-- Job Listings -->
+            <div class="flex flex-1 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
+                <div id="jobListings" class="w-full overflow-y-auto h-[calc(100vh-200px)]">
+                    <h2 class="text-2xl font-bold mb-4">Job Listings</h2>
+                    <div id="jobList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Job listings will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        async function loadJobListings() {
+            try {
+                const response = await fetch('/api/jobs');
+                const jobs = await response.json();
+
+                const jobList = document.getElementById('jobList');
+                jobList.innerHTML = '';
+
+                jobs.forEach(job => {
+                    const jobItem = document.createElement('div');
+                    jobItem.className = 'job-item p-6 bg-white rounded-lg shadow-md flex flex-col space-y-4';
+                    jobItem.innerHTML = `
+                        <h3 class="text-xl font-bold text-black">${job.title}</h3>
+                        <a href="${job.website}" class="text-blue-500 hover:underline">${job.website}</a>
+                        <p class="text-gray-500">${job.location}</p>
+                        <p class="text-gray-500">${job.salary}</p>
+                        <p class="text-gray-500">${job.jobType}</p>
+                        <p class="text-gray-700">${job.description}</p>
+                        <button class="apply-job bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition mt-4" data-id="${job.job_id}">Apply Now</button>
+                    `;
+                    jobList.appendChild(jobItem);
+                });
+            } catch (error) {
+                console.error('Error loading job listings:', error);
+            }
+        }
+
+        // Load job listings on page load
+        window.onload = function() {
+            loadJobListings();
+        }
+    </script>
 </body>
 </html>
 

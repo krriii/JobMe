@@ -5,12 +5,15 @@ import {
     getApplicationById,
     updateApplicationStatus,
     deleteApplication,
+    getApplicationsByJobSeeker
 } from "../controllers/applicationController.js";
 
 const router = express.Router();
 
 // Create a new application
 router.post("/", createApplication);
+
+router.get("/jobseekers/:job_seeker_id", getApplicationsByJobSeeker);
 
 // Get all applications
 router.get("/", getAllApplications);

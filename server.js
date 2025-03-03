@@ -48,7 +48,7 @@ server.use(session({
 server.use("/api/auth", authRoutes);
 server.use("/api/employers", employerRoutes);
 server.use("/api/jobSeekers", jobSeekerRoutes);
-server.use("/api/jobs", jobRoutes);
+server.use("/api/jobs", jobRoutes); // Ensure this line is present
 server.use("/api/applications", applicationRoutes);
 
 server.get("/", (req, res) => { 

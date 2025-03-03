@@ -39,6 +39,32 @@ export const getJobs = async (req, res) => {
     }
 };
 
+
+// **3. Get Jobs for the Logged-in Employer**
+export const getEmployerJobs = async (req, res) => {
+    try {
+        const employer_id = req.session.user.user_id; // Extract employer ID from authenticated user
+
+        console.log("Employer ID from session:", employer_id); // Log the employer ID
+
+        const jobs = await Job.findAll({
+            where: { employer_id },
+            include: [{ model: Employer, attributes: ["company_name", "location"] }],
+        });
+
+        console.log("Fetched jobs for employer:", jobs); // Log the fetched jobs
+
+        if (jobs.length === 0) {
+            return res.status(404).json({ message: "Job not found" });
+        }
+
+        res.status(200).json(jobs);
+    } catch (error) {
+        console.error("Error in getEmployerJobs:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
 // **3. Get Job by ID**
 export const getJobById = async (req, res) => {
     try {
@@ -63,7 +89,7 @@ export const getJobById = async (req, res) => {
 export const updateJob = async (req, res) => {
     try {
         const { job_id } = req.params;
-        const employer_id = req.user.user_id; // Extract employer ID from token
+        const employer_id = req.session.user.user_id; // Extract employer ID from token
         const { title, description, location, salary, jobType } = req.body;
 
         // Find job
@@ -87,7 +113,7 @@ export const updateJob = async (req, res) => {
 export const deleteJob = async (req, res) => {
     try {
         const { job_id } = req.params;
-        const employer_id = req.user.user_id; // Extract employer ID from token
+        const employer_id = req.session.user.user_id; // Extract employer ID from token
 
         const job = await Job.findOne({ where: { job_id, employer_id } });
 

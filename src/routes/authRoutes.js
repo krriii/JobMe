@@ -22,8 +22,12 @@ router.post("/login", async (req, res) => {
         if (user) {
             req.session.user = {
                 user_id: user.user_id,
-                user_type: user.user_type
+                user_type: user.user_type,
+                job_seeker_id: user.user_id
             };
+            // if (user.user_type === "Job Seeker") {
+            //     req.session.user.job_seeker_id = user.user_id; // Add job_seeker_id to session
+            // }
             console.log('Session set for user:', req.session.user); // Log session user
             const redirectUrl = user.user_type === "Employer" ? "/api/auth/dashboard/employer" : "/api/auth/dashboard/jobseeker";
             res.json({ redirect: redirectUrl });
@@ -43,7 +47,7 @@ router.get('/dashboard/employer', authenticateEmployer, (req, res) => {
 });
 
 router.get('/dashboard/jobseeker', authenticateJobSeeker, (req, res) => {
-    res.render('jobseeker/dashboard', { user: req.user }); // Render job seeker dashboard
+    res.render('jobseeker/dashboard', { user: req.user, job_seeker_id: req.session.user.job_seeker_id }); // Render job seeker dashboard
 });
 
 export default router;

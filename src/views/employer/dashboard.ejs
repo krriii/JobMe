@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +18,7 @@
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
         }
+
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -25,12 +27,14 @@
             width: 80%;
             max-width: 500px;
         }
+
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
+
         .close:hover,
         .close:focus {
             color: black;
@@ -39,6 +43,7 @@
         }
     </style>
 </head>
+
 <body class="h-full bg-gray-100">
     <div class="flex">
         <!-- Sidebar -->
@@ -49,22 +54,33 @@
             <div class="mt-5 flex-1 flex flex-col">
                 <ul class="space-y-2 px-2">
                     <li>
-                        <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                        <a href="#"
+                            class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
                             <span class="text-sm font-medium">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                        <a href="#"
+                            class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
                             <span class="text-sm font-medium">Job Posting</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                        <a href="#"
+                            class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
                             <span class="text-sm font-medium">Application List</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                        <!-- Logout Button -->
+                        <a href="#" id="logoutButton"
+                            class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                            <svg class="text-gray-400 group-hover:text-gray-300 mr-4 flex-shrink-0 h-6 w-6"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
                             <span class="text-sm font-medium">Logout</span>
                         </a>
                     </li>
@@ -79,7 +95,9 @@
                 <div class="flex items-center justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     <h1 class="text-3xl font-bold tracking-tight text-gray-900">Welcome Employer</h1>
                     <div class="relative">
-                        <input type="text" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Search...">
+                        <input type="text"
+                            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            placeholder="Search...">
                     </div>
                 </div>
             </header>
@@ -90,23 +108,32 @@
                     <div class="fixed inset-0 transition-opacity" aria-hidden="true">
                         <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
                     </div>
-                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                    <div class="inline-block overflow-hidden text-center align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                        aria-hidden="true">&#8203;</span>
+                    <div
+                        class="inline-block overflow-hidden text-center align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                         <div class="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
-                            <div class="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full sm:h-10 sm:w-10">
-                                <svg class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            <div
+                                class="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full sm:h-10 sm:w-10">
+                                <svg class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                             <div class="mt-3 text-center sm:mt-5">
-                                <h3 id="successModalTitle" class="text-lg font-medium leading-6 text-gray-900">Job Posted Successfully</h3>
+                                <h3 id="successModalTitle" class="text-lg font-medium leading-6 text-gray-900">Job
+                                    Posted Successfully</h3>
                                 <div class="mt-2">
-                                    <p id="successModalMessage" class="text-sm text-gray-500">Your job has been posted successfully.</p>
+                                    <p id="successModalMessage" class="text-sm text-gray-500">Your job has been posted
+                                        successfully.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
-                            <button id="closeSuccessMessageModal" type="button" class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm">Go Back to Dashboard</button>
+                            <button id="closeSuccessMessageModal" type="button"
+                                class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm">Go
+                                Back to Dashboard</button>
                         </div>
                     </div>
                 </div>
@@ -120,30 +147,39 @@
                     <form id="createJobForm" action="/api/jobs/create" method="POST">
                         <div class="mb-4">
                             <label for="title" class="block text-sm font-medium text-gray-700">Job Title</label>
-                            <input type="text" id="title" name="title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <input type="text" id="title" name="title"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         </div>
                         <div class="mb-4">
-                            <label for="description" class="block text-sm font-medium text-gray-700">Job Description</label>
-                            <textarea id="description" name="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+                            <label for="description" class="block text-sm font-medium text-gray-700">Job
+                                Description</label>
+                            <textarea id="description" name="description"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
                         </div>
                         <div class="mb-4">
-                            <label for="location" class="block text-sm font-medium text-gray-700">Job Location</label>
-                            <input type="text" id="location" name="location" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <label for="location" class="block text-sm font-medium text-gray-700">Job
+                                Location</label>
+                            <input type="text" id="location" name="location"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         </div>
                         <div class="mb-4">
                             <label for="salary" class="block text-sm font-medium text-gray-700">Salary</label>
-                            <input type="number" id="salary" name="salary" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <input type="number" id="salary" name="salary"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         </div>
                         <div class="mb-4">
                             <label for="jobType" class="block text-sm font-medium text-gray-700">Job Type</label>
-                            <select id="jobType" name="jobType" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <select id="jobType" name="jobType"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                 <option value="full-time">Full-time</option>
                                 <option value="part-time">Part-time</option>
                                 <option value="contract">Contract</option>
                             </select>
                         </div>
                         <div class="flex justify-end">
-                            <button id="submitButton" type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Create Job</button>
+                            <button id="submitButton" type="submit"
+                                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Create
+                                Job</button>
                         </div>
                     </form>
                 </div>
@@ -156,8 +192,24 @@
                     <h2 class="text-2xl font-bold mb-4">Confirm Delete</h2>
                     <p>Are you sure you want to delete this job posting?</p>
                     <div class="flex justify-end mt-4">
-                        <button id="confirmDeleteButton" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Delete</button>
-                        <button id="cancelDeleteButton" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition ml-2">Cancel</button>
+                        <button id="confirmDeleteButton"
+                            class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Delete</button>
+                        <button id="cancelDeleteButton"
+                            class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition ml-2">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Logout Confirmation Modal -->
+            <div id="logoutModal" class="modal">
+                <div class="modal-content">
+                    <span id="closeLogoutModal" class="close">&times;</span>
+                    <h2 class="text-2xl font-bold mb-4">Logout Confirmation</h2>
+                    <p>Are you sure you want to logout from the dashboard?</p>
+                    <div class="flex justify-end mt-4">
+                        <button id="confirmLogoutButton"
+                            class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Logout</button>
+                        <button id="cancelLogoutButton"
+                            class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition ml-2">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -166,10 +218,13 @@
             <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-2xl font-bold">Your Job Postings</h2>
-                    <button id="createJobBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Create Job</button>
+                    <button id="createJobBtn"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Create
+                        Job</button>
                 </div>
                 <div class="relative overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md sm:rounded-lg">
+                    <table
+                        class="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md sm:rounded-lg">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">Job Title</th>
@@ -203,7 +258,7 @@
         var successMessageModal = document.getElementById("successMessageModal");
         var closeSuccessMessageModal = document.getElementById("closeSuccessMessageModal");
 
-        // When the user clicks the button, open the modal 
+        // When the user clicks the button, open the modal
         btn.onclick = function() {
             modal.style.display = "block";
         }
@@ -277,7 +332,7 @@
         // Function to load job postings
         async function loadJobPostings() {
             try {
-                const response = await fetch('/api/jobs'); // Adjust the endpoint as needed
+                const response = await fetch('/api/jobs/employer/jobs'); // Adjust the endpoint as needed
                 const jobs = await response.json();
 
                 const tableBody = document.getElementById('jobPostingsTableBody');
@@ -285,7 +340,8 @@
 
                 jobs.forEach(job => {
                     const row = document.createElement('tr');
-                    row.classList.add('bg-white', 'border-b', 'dark:bg-gray-800', 'dark:border-gray-700', 'border-gray-200');
+                    row.classList.add('bg-white', 'border-b', 'dark:bg-gray-800', 'dark:border-gray-700',
+                        'border-gray-200');
 
                     row.innerHTML = `
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${job.title}</td>
@@ -295,134 +351,164 @@
                         <td class="px-6 py-4">${job.jobType}</td>
                         <td class="px-6 py-4">
                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline edit-job" data-id="${job.job_id}">Edit</a>
-                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4 delete-job" data-id="${job.job_id}">Delete</a>
+                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline delete-job" data-id="${job.job_id}">Delete</a>
                         </td>
                     `;
 
                     tableBody.appendChild(row);
                 });
+                // After the table is populated, attach event listeners to the edit and delete buttons
+                attachEventListeners();
 
-                // Add event listeners for edit and delete buttons
-                document.querySelectorAll('.edit-job').forEach(button => {
-                    button.addEventListener('click', handleEditJob);
-                });
-
-                document.querySelectorAll('.delete-job').forEach(button => {
-                    button.addEventListener('click', handleDeleteJob);
-                });
             } catch (error) {
                 console.error("Error loading job postings:", error);
+                alert("Failed to load job postings.");
             }
         }
 
-        // Function to handle job edit
-        async function handleEditJob(event) {
+        function attachEventListeners() {
+            document.querySelectorAll('.edit-job').forEach(item => {
+                item.addEventListener('click', editJob);
+            });
+
+            document.querySelectorAll('.delete-job').forEach(item => {
+                item.addEventListener('click', deleteJob);
+            });
+        }
+
+        let jobIdToDelete;
+
+        async function deleteJob(event) {
             event.preventDefault();
+
+            // Retrieve the job ID from the data-id attribute of the clicked link
+            jobIdToDelete = event.target.dataset.id;
+
+            // Show the delete confirmation modal
+            document.getElementById('deleteJobModal').style.display = 'block';
+
+            // Set up event listeners for confirm and cancel buttons inside the modal
+            document.getElementById('confirmDeleteButton').onclick = async function() {
+                try {
+                    const response = await fetch(`/api/jobs/${jobIdToDelete}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        // Optionally, display a success message
+                        alert("Job deleted successfully!");
+                        // Reload the job postings to update the table
+                        loadJobPostings();
+                    } else {
+                        alert(`Error deleting job: ${result.message}`);
+                    }
+                } catch (error) {
+                    console.error("Error deleting job:", error);
+                    alert("An error occurred while deleting the job.");
+                } finally {
+                    // Close the modal
+                    document.getElementById('deleteJobModal').style.display = 'none';
+                }
+            };
+
+            document.getElementById('cancelDeleteButton').onclick = function() {
+                // Close the modal
+                document.getElementById('deleteJobModal').style.display = 'none';
+                jobIdToDelete = null; // Reset jobIdToDelete
+            };
+        }
+
+        function editJob(event) {
+            event.preventDefault();
+
             const jobId = event.target.dataset.id;
-
-            // Fetch job details and populate the form for editing
-            try {
-                const response = await fetch(`/api/jobs/${jobId}`);
-                const job = await response.json();
-
-                if (response.ok) {
+            // Fetch the job details
+            fetch(`/api/jobs/${jobId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(job => {
+                    // Populate the modal fields with the job data
+                    document.getElementById('modalTitle').innerText = 'Edit Job';
+                    document.getElementById('createJobForm').action = `/api/jobs/${jobId}`; // Set the update endpoint
+                    document.getElementById('createJobForm').dataset.method = 'PUT'; // Set the method to PUT
                     document.getElementById('title').value = job.title;
                     document.getElementById('description').value = job.description;
                     document.getElementById('location').value = job.location;
                     document.getElementById('salary').value = job.salary;
                     document.getElementById('jobType').value = job.jobType;
 
-                    // Change form action to update job
-                    document.getElementById('createJobForm').action = `/api/jobs/${jobId}`;
-                    document.getElementById('createJobForm').dataset.method = 'PUT'; // Use dataset to store the method
-
-                    // Update modal title and button text
-                    document.getElementById('modalTitle').innerText = 'Update Job';
-                    document.getElementById('submitButton').innerText = 'Update Job';
-
-                    // Open the modal
-                    modal.style.display = "block";
-                } else {
-                    alert('Failed to fetch job details.');
-                }
-            } catch (error) {
-                console.error('Error fetching job details:', error);
-                alert('An error occurred while fetching the job details.');
-            }
+                    // Show the modal
+                    document.getElementById('createJobModal').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error fetching job:', error);
+                    alert('Failed to fetch job details for editing.');
+                });
         }
 
-        // Function to handle job delete
-        async function handleDeleteJob(event) {
-            event.preventDefault();
-            jobIdToDelete = event.target.dataset.id;
-            deleteModal.style.display = "block";
-        }
-
-        // Function to reset the modal
         function resetModal() {
             document.getElementById('modalTitle').innerText = 'Create New Job';
-            document.getElementById('submitButton').innerText = 'Create Job';
             document.getElementById('createJobForm').action = '/api/jobs/create';
-            document.getElementById('createJobForm').dataset.method = 'POST'; // Reset method to POST
+            document.getElementById('createJobForm').dataset.method = 'POST';
             document.getElementById('createJobForm').reset();
         }
+                // Get the logout button and modal
+        const logoutButton = document.getElementById('logoutButton');
+        const logoutModal = document.getElementById('logoutModal');
+        const confirmLogoutButton = document.getElementById('confirmLogoutButton');
+        const cancelLogoutButton = document.getElementById('cancelLogoutButton');
+        const closeLogoutModal = document.getElementById('closeLogoutModal');
+        // Show the logout modal when the logout button is clicked
+        logoutButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            logoutModal.style.display = 'block';
+        });
 
-        // Load job postings on page load
-        window.onload = loadJobPostings;
-    </script>
-
-    <script>
-        // Get the delete confirmation modal
-        var deleteModal = document.getElementById("deleteJobModal");
-
-        // Get the <span> element that closes the delete modal
-        var closeDeleteModal = document.getElementById("closeDeleteModal");
-
-        // Get the confirm and cancel buttons
-        var confirmDeleteButton = document.getElementById("confirmDeleteButton");
-        var cancelDeleteButton = document.getElementById("cancelDeleteButton");
-
-        // Variable to store the job ID to be deleted
-        var jobIdToDelete = null;
-
-        // When the user clicks on <span> (x), close the delete modal
-        closeDeleteModal.onclick = function() {
-            deleteModal.style.display = "none";
-        }
-
-        // When the user clicks on the cancel button, close the delete modal
-        cancelDeleteButton.onclick = function() {
-            deleteModal.style.display = "none";
-        }
-
-        // When the user clicks on the confirm delete button, proceed with deletion
-        confirmDeleteButton.onclick = async function() {
-            const employerId = <%= JSON.stringify(user.user_id) %>; // Correctly embed the EJS variable
-
+        // Hide the logout modal when the cancel button is clicked
+        cancelLogoutButton.addEventListener('click', () => {
+            logoutModal.style.display = 'none';
+        });
+        closeLogoutModal.addEventListener('click', () => {
+            logoutModal.style.display = 'none';
+        });
+        // Handle the logout process when the confirm button is clicked
+        confirmLogoutButton.addEventListener('click', async () => {
             try {
-                const response = await fetch(`/api/jobs/${jobIdToDelete}`, {
-                    method: 'DELETE',
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ employer_id: employerId })
+                    }
                 });
 
                 if (response.ok) {
-                    loadJobPostings(); // Reload job postings after successful deletion
-                    deleteModal.style.display = "none";
+                    // Clear any stored user data (if you're using localStorage)
+                    localStorage.removeItem('employerId');
+                    localStorage.removeItem('userType');
+
+                    // Redirect to the login page
+                    window.location.href = '/api/auth/login';
                 } else {
-                    alert('Failed to delete job posting.');
+                    const data = await response.json();
+                    alert(data.message || 'Logout failed. Please try again.');
                 }
             } catch (error) {
-                console.error('Error deleting job posting:', error);
-                alert('An error occurred while deleting the job posting.');
+                console.error('Error during logout:', error);
+                alert('An error occurred during logout. Please try again.');
             }
-        }
-
-        // Load job postings on page load
-        window.onload = loadJobPostings;
+        });
+        // Load job postings when the page loads
+        loadJobPostings();
     </script>
 </body>
-</html>
 
+</html>
