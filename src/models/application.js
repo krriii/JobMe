@@ -42,4 +42,5 @@ const Application = sequelize.define(
 Application.belongsTo(Job, { foreignKey: "job_id", onDelete: "CASCADE" });
 Application.belongsTo(JobSeeker, { foreignKey: "job_seeker_id", onDelete: "CASCADE" });
 
+
 export default Application;

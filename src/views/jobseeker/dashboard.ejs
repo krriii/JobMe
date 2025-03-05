@@ -389,12 +389,52 @@
         });
 
         // Function to check if a job seeker has already applied for a job
-        async function checkIfAlreadyApplied(jobSeekerId, jobId) {
-    try {
-        const response = await fetch(`/api/applications/check?job_seeker_id=${jobSeekerId}&job_id=${jobId}`);
+//         async function checkIfAlreadyApplied(jobSeekerId, jobId) {
+//     try {
+//         const response = await fetch(`/api/applications/check?job_seeker_id=${jobSeekerId}&job_id=${jobId}`);
 
-        if (response.status === 404) {
-            console.error('Error checking application status: 404');
+//         if (response.status === 404) {
+//             console.error('Error checking application status: 404');
+//             return false;
+//         }
+
+//         const data = await response.json();
+//         return data.alreadyApplied;
+//     } catch (error) {
+//         console.error("Error checking application status:", error);
+//         return false;
+//     }
+// }
+
+// async function checkIfAlreadyApplied(jobSeekerId, jobId) {
+//     try {
+//         const response = await fetch(`/api/applications/check?job_seeker_id=${jobSeekerId}&job_id=${jobId}`);
+
+//         if (response.status === 404) {
+//             console.error('Error checking application status: 404');
+//             return false;
+//         }
+
+//         const data = await response.json();
+//         return data.alreadyApplied;
+//     } catch (error) {
+//         console.error("Error checking application status:", error);
+//         return false;
+//     }
+// }
+
+async function checkIfAlreadyApplied(jobSeekerId, jobId) {
+    try {
+        const response = await fetch("/api/applications/check", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ job_seeker_id: jobSeekerId, job_id: jobId }),
+        });
+
+        if (!response.ok) {
+            console.error("Error checking application status:", response.status);
             return false;
         }
 

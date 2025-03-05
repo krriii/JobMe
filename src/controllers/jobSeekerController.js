@@ -1,18 +1,6 @@
 import JobSeeker from "../models/jobSeeker.js";
 import User from "../models/user.js";
 
-// Create JobSeeker
-// export const createJobSeeker = async (req, res) => {
-//     try {
-//         const jobSeeker = await JobSeeker.create(req.body);
-//         res.status(201).json(jobSeeker);
-//     } catch (error) {
-//         console.error("Error creating job seeker:", error);
-//         res.status(500).json({ message: "Internal Server Error" });
-//     }
-// };
-
-// **Create Job Seeker Profile**
 // **Create Job Seeker Profile**
 export const createJobSeeker = async (req, res) => {
     try {

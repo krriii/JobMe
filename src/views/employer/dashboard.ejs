@@ -48,8 +48,8 @@
     <div class="flex">
         <!-- Sidebar -->
         <nav class="bg-gray-800 w-64 min-h-screen">
-            <div class="flex items-center h-16 bg-gray-800">
-                <h1 class="text-white text-2xl font-semibold">JobMe</h1>
+            <div class="flex items-center h-16 bg-gray-800 px-4">
+                <h1 class="text-white text-2xl font-bold">JobMe</h1>
             </div>
             <div class="mt-5 flex-1 flex flex-col">
                 <ul class="space-y-2 px-2">
@@ -61,7 +61,7 @@
                     </li>
             
                     <li>
-                        <a href="/api/employers/applications" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                        <a href="/api/auth/dashboard/employer/application-list" id="applicationListLink" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
                             <span class="text-sm font-medium">Application List</span>
                         </a>
                     </li>
@@ -141,24 +141,24 @@
                     <form id="createJobForm" action="/api/jobs/create" method="POST">
                         <div class="mb-4">
                             <label for="title" class="block text-sm font-medium text-gray-700">Job Title</label>
-                            <input type="text" id="title" name="title"
+                            <input type="text" id="title" name="title" required
                                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         </div>
                         <div class="mb-4">
                             <label for="description" class="block text-sm font-medium text-gray-700">Job
                                 Description</label>
-                            <textarea id="description" name="description"
+                            <textarea id="description" name="description" required
                                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
                         </div>
                         <div class="mb-4">
                             <label for="location" class="block text-sm font-medium text-gray-700">Job
                                 Location</label>
-                            <input type="text" id="location" name="location"
+                            <input type="text" id="location" name="location" required
                                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         </div>
                         <div class="mb-4">
                             <label for="salary" class="block text-sm font-medium text-gray-700">Salary</label>
-                            <input type="number" id="salary" name="salary"
+                            <input type="number" id="salary" name="salary" required
                                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         </div>
                         <div class="mb-4">
@@ -283,11 +283,20 @@
             const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
 
+            if (!data.title || !data.description || !data.location || !data.salary) {
+        alert("Please fill in all required fields.");
+        return;
+    }
             // Ensure salary is a valid decimal
             if (!data.salary || isNaN(data.salary)) {
                 alert("Please enter a valid salary.");
                 return;
             }
+
+            if (data.title.length < 3) {
+        alert("Job Title must be at least 3 characters long.");
+        return;
+    }
 
             try {
                 const method = this.dataset.method || 'POST'; // Default to POST if method is not set
@@ -326,7 +335,7 @@
         // Function to load job postings
         async function loadJobPostings() {
             try {
-                const response = await fetch('/api/jobs/employer/jobs'); // Adjust the endpoint as needed
+                const response = await fetch('/api/jobs/employer/jobs'); 
                 const jobs = await response.json();
 
                 const tableBody = document.getElementById('jobPostingsTableBody');

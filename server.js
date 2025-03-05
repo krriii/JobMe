@@ -22,6 +22,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 server.set('view engine', 'ejs');
 server.set('views', path.join(__dirname, 'src', 'views'));
 
+
+
 // Middleware
 server.use(express.json()); // To handle JSON requests
 server.use(express.urlencoded({ extended: true })); // To handle form data
@@ -32,7 +34,9 @@ server.use(session({
     secret: process.env.SESSION_SECRET || 'your_session_secret_key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: { 
+        //httpOnly: true, 
+        secure: false } 
 }));
 
 // Sync Database

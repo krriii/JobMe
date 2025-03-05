@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('form').addEventListener('submit', async (e) => {
         e.preventDefault();
 
+
         const formData = {
             name: document.querySelector('input[name="name"]').value,
             email: document.querySelector('input[name="email"]').value,

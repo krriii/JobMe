@@ -10,11 +10,24 @@ import {
     getApplicationsByJobSeekerId, checkIfAlreadyApplied
 } from "../controllers/applicationController.js";
 import multer from 'multer';
+import path from 'path';
 
 import { authenticateEmployer, authenticateJobSeeker } from "../middlewares/authMiddlewares.js";
 
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' });
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+});
+
+const upload = multer({ storage: storage });
+
+
 
 // Create a new application
 router.post("/apply", upload.single('resume'), createApplication);
@@ -39,5 +52,9 @@ router.get("/jobSeekerId/:job_seeker_id", authenticateJobSeeker, getApplications
 
 // **8. Get applications for employer (Employer only)**
 router.get("/employer", authenticateEmployer, getApplicationsForEmployer); 
+
+
+
+
 
 export default router;

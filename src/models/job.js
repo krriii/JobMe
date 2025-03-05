@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
 import Employer from "./employer.js";
 
+
 const Job = sequelize.define(
   "Job",
   {
@@ -44,5 +45,8 @@ const Job = sequelize.define(
 
 // Define association (Many-to-1 with Employer)
 Job.belongsTo(Employer, { foreignKey: "employer_id", onDelete: "CASCADE" });
+
+
+
 
 export default Job;
