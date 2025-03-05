@@ -1,6 +1,8 @@
 import express from "express";
 import { registerUser, loginUser, logoutUser } from "../controllers/authController.js";
 import { authenticateEmployer, authenticateJobSeeker } from "../middlewares/authMiddlewares.js";
+import JobSeeker from "../models/jobSeeker.js";
+import Employer from "../models/employer.js";
 
 const router = express.Router();
 
@@ -49,5 +51,6 @@ router.get('/dashboard/employer', authenticateEmployer, (req, res) => {
 router.get('/dashboard/jobseeker', authenticateJobSeeker, (req, res) => {
     res.render('jobseeker/dashboard', { user: req.user, job_seeker_id: req.session.user.job_seeker_id }); // Render job seeker dashboard
 });
+
 
 export default router;

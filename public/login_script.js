@@ -56,3 +56,4 @@ async function loadJobSeekerDashboard() {
         alert(error.message || 'Failed to load dashboard');
     }
 }
+

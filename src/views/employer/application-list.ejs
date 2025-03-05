@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application List | JobMe</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="h-full bg-gray-100">
+    <div class="flex">
+        <!-- Sidebar -->
+        <nav class="bg-gray-800 w-64 min-h-screen">
+            <div class="flex items-center h-16 bg-gray-800">
+                <h1 class="text-white text-2xl font-semibold">JobMe</h1>
+            </div>
+            <div class="mt-5 flex-1 flex flex-col">
+                <ul class="space-y-2 px-2">
+                    <li>
+                        <a href="/api/auth/dashboard/employer" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                            <span class="text-sm font-medium">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                            <span class="text-sm font-medium">Job Posting</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/api/employers/applications" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                            <span class="text-sm font-medium">Application List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                            <span class="text-sm font-medium">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+
+        <!-- Main content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-white shadow-sm">
+                <div class="flex items-center justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                    <h1 class="text-3xl font-bold tracking-tight text-gray-900">Application List</h1>
+                </div>
+            </header>
+
+            <!-- Application List Table -->
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-md sm:rounded-lg">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Job Title</th>
+                                <th scope="col" class="px-6 py-3">Job Seeker Name</th>
+                                <th scope="col" class="px-6 py-3">Job Seeker Email</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
+                                <th scope="col" class="px-6 py-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationsTableBody">
+                            <!-- Applications will be dynamically inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <span id="closeLogoutModal" class="close">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Logout Confirmation</h2>
+            <p>Are you sure you want to logout from the dashboard?</p>
+            <div class="flex justify-end mt-4">
+                <button id="confirmLogoutButton" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Logout</button>
+                <button id="cancelLogoutButton" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition ml-2">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadApplications() {
+            try {
+                const response = await fetch('/api/applications/employer');
+                const applications = await response.json();
+
+                const tableBody = document.getElementById('applicationsTableBody');
+                tableBody.innerHTML = ''; // Clear existing rows
+
+                applications.forEach(application => {
+                    const row = document.createElement('tr');
+                    row.classList.add('bg-white', 'border-b', 'dark:bg-gray-800', 'dark:border-gray-700', 'border-gray-200');
+
+                    row.innerHTML = `
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${application.Job.title}</td>
+                        <td class="px-6 py-4">${application.JobSeeker.User.name}</td>
+                        <td class="px-6 py-4">${application.JobSeeker.User.email}</td>
+                        <td class="px-6 py-4">${application.status}</td>
+                        <td class="px-6 py-4">
+                            <button class="text-blue-600 hover:text-blue-800 mr-2" onclick="viewApplication(${application.id})">View</button>
+                            <button class="text-green-600 hover:text-green-800 mr-2" onclick="updateStatus(${application.id}, 'Accepted')">Accept</button>
+                            <button class="text-red-600 hover:text-red-800" onclick="updateStatus(${application.id}, 'Rejected')">Reject</button>
+                        </td>
+                    `;
+
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error loading applications:", error);
+                alert("Failed to load applications.");
+            }
+        }
+
+        async function updateStatus(applicationId, newStatus) {
+            try {
+                const response = await fetch(`/api/applications/${applicationId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        status: newStatus
+                    }),
+                });
+
+                if (response.ok) {
+                    loadApplications(); // Reload the applications to reflect the change
+                } else {
+                    alert('Failed to update application status');
+                }
+            } catch (error) {
+                console.error("Error updating application status:", error);
+                alert("An error occurred while updating the application status.");
+            }
+        }
+
+        function viewApplication(applicationId) {
+            // Implement view application functionality
+            alert(`Viewing application ${applicationId}`);
+            // You might want to open a modal or navigate to a detailed view page
+        }
+
+        // Get the logout button and modal
+        const logoutButton = document.getElementById('logoutButton');
+        const logoutModal = document.getElementById('logoutModal');
+        const confirmLogoutButton = document.getElementById('confirmLogoutButton');
+        const cancelLogoutButton = document.getElementById('cancelLogoutButton');
+        const closeLogoutModal = document.getElementById('closeLogoutModal');
+        // Show the logout modal when the logout button is clicked
+        logoutButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            logoutModal.style.display = 'block';
+        });
+
+        // Hide the logout modal when the cancel button is clicked
+        cancelLogoutButton.addEventListener('click', () => {
+            logoutModal.style.display = 'none';
+        });
+        closeLogoutModal.addEventListener('click', () => {
+            logoutModal.style.display = 'none';
+        });
+        // Handle the logout process when the confirm button is clicked
+        confirmLogoutButton.addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // Clear any stored user data (if you're using localStorage)
+                    localStorage.removeItem('employerId');
+                    localStorage.removeItem('userType');
+
+                    // Redirect to the login page
+                    window.location.href = '/login';
+                } else {
+                    const data = await response.json();
+                    alert(data.message || 'Logout failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error during logout:', error);
+                alert('An error occurred during logout. Please try again.');
+            }
+        });
+
+        // Load applications when the page loads
+        document.addEventListener('DOMContentLoaded', loadApplications);
+    </script>
+</body>
+
+</html>

@@ -9,10 +9,6 @@ const JobSeeker = sequelize.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
-    resume_file: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     skills: {
       type: DataTypes.TEXT,
     },

@@ -23,15 +23,6 @@ const Application = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    skills: {
-      type: DataTypes.TEXT,
-    },
-    experience: {
-      type: DataTypes.TEXT,
-    },
-    portfolio_link: {
-      type: DataTypes.STRING,
-    },
     status: {
       type: DataTypes.ENUM("Pending", "Accepted", "Rejected"),
       defaultValue: "Pending",

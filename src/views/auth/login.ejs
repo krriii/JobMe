@@ -34,6 +34,18 @@
             <a href="/api/auth/register" class="text-blue-500 hover:underline">Register</a>
         </p>
     </div>
+    <div id="profileCompletionModal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <h2>Complete Your Profile</h2>
+          <form id="completeProfileForm">
+            <textarea name="skills" placeholder="Skills" required></textarea>
+            <textarea name="experience" placeholder="Experience" required></textarea>
+            <textarea name="education" placeholder="Education" required></textarea>
+            <button type="submit">Complete Profile</button>
+          </form>
+        </div>
+      </div>
+      
     <script src="/login_script.js"></script>
 </body>
 </html>

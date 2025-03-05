@@ -2,15 +2,54 @@ import JobSeeker from "../models/jobSeeker.js";
 import User from "../models/user.js";
 
 // Create JobSeeker
+// export const createJobSeeker = async (req, res) => {
+//     try {
+//         const jobSeeker = await JobSeeker.create(req.body);
+//         res.status(201).json(jobSeeker);
+//     } catch (error) {
+//         console.error("Error creating job seeker:", error);
+//         res.status(500).json({ message: "Internal Server Error" });
+//     }
+// };
+
+// **Create Job Seeker Profile**
+// **Create Job Seeker Profile**
 export const createJobSeeker = async (req, res) => {
     try {
-        const jobSeeker = await JobSeeker.create(req.body);
-        res.status(201).json(jobSeeker);
+        const { name, email, password, skills, experience, portfolio_link } = req.body;
+
+        // Check if user already exists
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+
+        // Create new user in Users table
+        const newUser = await User.create({
+            name,
+            email,
+            password,  // Assume password is already hashed
+            user_type: "Job Seeker"
+        });
+
+        // Create job seeker profile linked to user
+        const jobSeeker = await JobSeeker.create({
+            job_seeker_id: newUser.user_id,  // Link with Users table
+            skills,
+            experience,
+            portfolio_link,
+            profile_completed: true  // Set to true since we're creating a complete profile
+        });
+
+        res.status(201).json({ message: "Job Seeker profile created", jobSeeker });
     } catch (error) {
         console.error("Error creating job seeker:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+
+
 
 // Get all JobSeekers
 export const getJobSeekers = async (req, res) => {

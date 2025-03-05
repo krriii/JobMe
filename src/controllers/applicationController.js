@@ -1,29 +1,124 @@
 import Application from "../models/application.js";
 import Job from "../models/job.js";
 import JobSeeker from "../models/jobSeeker.js";
+import multer from 'multer';
+import path from 'path';
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+});
+
+const upload = multer({ storage: storage });
 
 // Create a new application
 export const createApplication = async (req, res) => {
-    try {
-        const { job_id, job_seeker_id, resume_file, skills, experience, portfolio_link } = req.body;
+    upload.single('resume')(req, res, async (err) => {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json({ message: "File upload error" });
+        } else if (err) {
+            return res.status(500).json({ message: "Unknown error during file upload" });
+        }
 
-        const application = await Application.create({
-            job_id,
-            job_seeker_id,
-            resume_file,
-            skills,
-            experience,
-            portfolio_link,
-            status: "Pending",
-            applied_at: new Date(),
+        try {
+            const { job_id } = req.body;
+            const job_seeker_id = req.session.user.user_id; // Assuming you store user ID in session
+            const resume_file = req.file ? req.file.path : null;
+
+            if (!resume_file) {
+                return res.status(400).json({ message: "Resume file is required" });
+            }
+
+            const application = await Application.create({
+                job_id,
+                job_seeker_id,
+                resume_file,
+                status: "Pending",
+                applied_at: new Date(),
+            });
+
+            res.status(201).json(application);
+        } catch (error) {
+            console.error("Error creating application:", error);
+            res.status(500).json({ message: "Internal Server Error" });
+        }
+    });
+};
+
+// Check if job seeker has already applied for a job
+export const checkIfAlreadyApplied = async (req, res) => {
+    try {
+        const { job_seeker_id, job_id } = req.body;  // Get IDs from req.body
+
+        const existingApplication = await Application.findOne({
+            where: {
+                job_seeker_id: job_seeker_id,
+                job_id: job_id
+            }
         });
 
-        res.status(201).json(application);
+        if (existingApplication) {
+            return res.status(200).json({ alreadyApplied: true });
+        } else {
+            return res.status(200).json({ alreadyApplied: false });
+        }
     } catch (error) {
-        console.error("Error creating application:", error);
+        console.error("Error checking if already applied:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+
+
+// Create a new application
+// export const createApplication = async (req, res) => {
+//     try {
+//         const { job_id, job_seeker_id, resume_file } = req.body;
+
+//         const application = await Application.create({
+//             job_id,
+//             job_seeker_id,
+//             resume_file,
+//             status: "Pending",
+//             applied_at: new Date(),
+//         });
+
+//         res.status(201).json(application);
+//     } catch (error) {
+//         console.error("Error creating application:", error);
+//         res.status(500).json({ message: "Internal Server Error" });
+//     }
+// };
+
+// export const createApplication = async (req, res) => {
+//     try {
+//         const { job_id } = req.body;
+//         const job_seeker_id = req.session.user.user_id; // Assuming you store user ID in session
+//         const resume_file = req.file ? req.file.path : null;
+
+//         if (!resume_file) {
+//             return res.status(400).json({ message: "Resume file is required" });
+//         }
+
+//         const application = await Application.create({
+//             job_id,
+//             job_seeker_id,
+//             resume_file,
+//             status: "Pending",
+//             applied_at: new Date(),
+//         });
+
+//         res.status(201).json(application);
+//     } catch (error) {
+//         console.error("Error creating application:", error);
+//         res.status(500).json({ message: "Internal Server Error" });
+//     }
+// };
+
 
 // Get all applications
 export const getAllApplications = async (req, res) => {
@@ -124,6 +219,55 @@ export const getApplicationsByJobSeekerId = async (req, res) => {
             where: { job_seeker_id },
             include: [{ model: Job }]
         });
+        res.status(200).json(applications);
+    } catch (error) {
+        console.error("Error fetching applications:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+// Get applications for the logged-in employer
+export const getApplicationsForEmployer = async (req, res) => {
+    try {
+        const employer_id = req.session.user.user_id;
+
+        // Find all jobs posted by the employer
+        const jobs = await Job.findAll({
+            where: { employer_id },
+            attributes: ['job_id'], // Only need the job_id
+        });
+
+        if (!jobs || jobs.length === 0) {
+            return res.status(404).json({ message: "No jobs found for this employer" });
+        }
+
+        // Extract job IDs
+        const jobIds = jobs.map(job => job.job_id);
+
+        // Find all applications for those jobs
+        const applications = await Application.findAll({
+            where: {
+                job_id: {
+                    [Op.in]: jobIds  // Use Sequelize's Op.in operator
+                }
+            },
+            include: [
+                {
+                    model: Job,
+                    include: [Employer]  // Include Employer data for the Job
+                },
+                {
+                    model: JobSeeker,
+                    attributes: ['job_seeker_id', 'resume_file', 'skills', 'experience', 'portfolio_link'],
+                    include: [{model: User, attributes: ['name', 'email']}]
+                }
+            ],
+        });
+
+        if (!applications || applications.length === 0) {
+            return res.status(404).json({ message: "No applications found for this employer's jobs" });
+        }
+
         res.status(200).json(applications);
     } catch (error) {
         console.error("Error fetching applications:", error);

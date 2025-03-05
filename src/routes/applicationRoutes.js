@@ -5,13 +5,20 @@ import {
     getApplicationById,
     updateApplicationStatus,
     deleteApplication,
-    getApplicationsByJobSeeker
+    getApplicationsByJobSeeker,
+    getApplicationsForEmployer,
+    getApplicationsByJobSeekerId, checkIfAlreadyApplied
 } from "../controllers/applicationController.js";
+import multer from 'multer';
+
+import { authenticateEmployer, authenticateJobSeeker } from "../middlewares/authMiddlewares.js";
 
 const router = express.Router();
+const upload = multer({ dest: 'uploads/' });
 
 // Create a new application
-router.post("/", createApplication);
+router.post("/apply", upload.single('resume'), createApplication);
+router.get("/check", checkIfAlreadyApplied);
 
 router.get("/jobseekers/:job_seeker_id", getApplicationsByJobSeeker);
 
@@ -26,5 +33,11 @@ router.put("/:id/status", updateApplicationStatus);
 
 // Delete application
 router.delete("/:id", deleteApplication);
+
+// **7. Get applications by job seeker ID**
+router.get("/jobSeekerId/:job_seeker_id", authenticateJobSeeker, getApplicationsByJobSeekerId);
+
+// **8. Get applications for employer (Employer only)**
+router.get("/employer", authenticateEmployer, getApplicationsForEmployer); 
 
 export default router;

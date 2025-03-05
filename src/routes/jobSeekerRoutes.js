@@ -6,9 +6,10 @@ import {
     updateJobSeeker,
     deleteJobSeeker,
     renderDashboard,
-    renderApplications // Add this import
+    renderApplications
 } from "../controllers/jobSeekerController.js";
 import { createApplication } from "../controllers/applicationController.js";
+import { authenticateUser, authenticateJobSeeker } from "../middlewares/authMiddlewares.js";
 
 const router = express.Router();
 
@@ -20,6 +21,7 @@ router.delete("/:id", deleteJobSeeker);
 router.get("/dashboard", renderDashboard);
 router.get("/applications", renderApplications); // Add this route to render the application statuses page
 router.post("/applications", createApplication); // Add this route to handle job applications
+
 
 export default router;
 

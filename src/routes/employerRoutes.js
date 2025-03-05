@@ -14,6 +14,11 @@ router.delete("/:id", deleteEmployer); // Delete an employer
 // Route to handle form submission
 router.post('/submit-form', submitForm);
 
+// Route for displaying the application list
+router.get('/applications', authenticateEmployer, (req, res) => {
+    res.render('employer/application-list');
+});
+
 
 // Route to handle job creation
 //router.post('/jobs/create', authenticateEmployer, createJob);

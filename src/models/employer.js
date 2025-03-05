@@ -11,7 +11,7 @@ const Employer = sequelize.define(
     },
     company_name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      
     },
     industry: {
       type: DataTypes.STRING,
@@ -22,6 +22,10 @@ const Employer = sequelize.define(
     website: {
       type: DataTypes.STRING,
     },
+    // profile_completed: {
+    //   type: DataTypes.BOOLEAN,
+    //   defaultValue: false
+    // },
   },
   {
     timestamps: false,

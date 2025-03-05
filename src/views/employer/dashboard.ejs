@@ -54,20 +54,14 @@
             <div class="mt-5 flex-1 flex flex-col">
                 <ul class="space-y-2 px-2">
                     <li>
-                        <a href="#"
+                        <a href="http://localhost:3000/api/auth/dashboard/employer"
                             class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
                             <span class="text-sm font-medium">Dashboard</span>
                         </a>
                     </li>
+            
                     <li>
-                        <a href="#"
-                            class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
-                            <span class="text-sm font-medium">Job Posting</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                        <a href="/api/employers/applications" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
                             <span class="text-sm font-medium">Application List</span>
                         </a>
                     </li>
@@ -93,7 +87,7 @@
             <!-- Header -->
             <header class="bg-white shadow-sm">
                 <div class="flex items-center justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <h1 class="text-3xl font-bold tracking-tight text-gray-900">Welcome Employer</h1>
+                    <h1 class="text-3xl font-bold tracking-tight text-gray-900">Welcome <%= user.name %></h1>
                     <div class="relative">
                         <input type="text"
                             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
